@@ -2,18 +2,18 @@
 Django settings for Dragotama Back End.
 """
 
-import os
+# import os
 from pathlib import Path
 import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 env = environ.Env()
-env.read_env(os.path.join(BASE_DIR, ".env"))
+env.read_env('/home/kayson99/dragon_back_end/.env')
 SECRET_KEY = env("SECRET_KEY")
 
 DEBUG = True
