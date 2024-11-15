@@ -12,6 +12,7 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    'kayson99.pythonanywhere.com'
 ]
 
 CORS_ALLOWED_ORIGINS = ["capacitor://localhost", "https://localhost"]
