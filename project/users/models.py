@@ -16,8 +16,8 @@ class User(AbstractUser):
     )
 
     # Normal Properties
-    food_owned = models.PositiveIntegerField()
-    treasure_owned = models.PositiveIntegerField()
+    food_owned = models.PositiveIntegerField(default=0)
+    treasure_owned = models.PositiveIntegerField(default=0)
 
     # Methods
     def __str__(self):
