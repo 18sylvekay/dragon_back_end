@@ -3,11 +3,11 @@ Django settings for Dragotama Back End.
 """
 
 import os
+from pathlib import Path
 import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-DIRNAME = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE_DIR = os.path.dirname(DIRNAME)
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -17,6 +17,11 @@ env.read_env(os.path.join(BASE_DIR, ".env"))
 SECRET_KEY = env("SECRET_KEY")
 
 DEBUG = True
+
+ALLOWED_HOSTS = [
+    '.localhost',
+    '127.0.0.1',
+]
 
 # Application definition
 
@@ -32,6 +37,7 @@ INSTALLED_APPS = [
     'kronos',
     'rest_framework',
     'rest_framework.authtoken',
+    'project.users',
 ]
 
 MIDDLEWARE = [
@@ -50,7 +56,7 @@ ROOT_URLCONF = 'project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(DIRNAME, "templates")],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

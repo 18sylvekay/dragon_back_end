@@ -1,12 +1,20 @@
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
 import os
+import re
+import socket
 import sys
 
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings')
+    if re.match(r"dragon", socket.gethostname()):
+        settings_name = "production"
+    else:
+        settings_name = "development"
+
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', "project.settings." + settings_name)
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
