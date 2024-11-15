@@ -8,6 +8,7 @@ import sys
 
 def main():
     """Run administrative tasks."""
+    print('socket hostname', socket.gethostname())
     if re.match(r"kayson99", socket.gethostname()):
         settings_name = "production"
     else:
