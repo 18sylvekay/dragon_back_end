@@ -6,7 +6,6 @@ from rest_framework.test import APIClient
 
 
 class UserTestCase(TestCase):
-    username = "user_1"
     email = "test@example.com"
 
     def setUp(self) -> None:

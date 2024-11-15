@@ -1,5 +1,6 @@
 import datetime
 from rest_framework import serializers
+import pytz
 
 from project.dragons.models import Dragon
 
@@ -17,14 +18,14 @@ class DragonSerializer(serializers.Serializer):
         return obj.user.id
 
     def get_level(self, obj):
-        current_date = datetime.now()
+        current_date = datetime.datetime.now(pytz.UTC)
         delta = current_date - obj.date_created
 
         # Calculate full weeks since date created
         return delta.days // 7
 
     def get_days_until_next_level(self, obj):
-        current_date = datetime.now()
+        current_date = datetime.datetime.now(pytz.UTC)
         delta = current_date - obj.date_created
 
         # Calculate days since the last full week
