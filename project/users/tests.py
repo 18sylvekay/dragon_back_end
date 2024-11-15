@@ -45,7 +45,6 @@ class UserTestCase(TestCase):
 
         response = self.client.post("/api/users/login/", data=data)
 
-
         self.assertEqual(response.status_code, 200)
 
     def test_logout_endpoint(self):
