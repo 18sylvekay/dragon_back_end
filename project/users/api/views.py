@@ -14,7 +14,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = MeSerializer
 
     def get_queryset(self):
-        return User.objects.get(id=self.request.user.id)
+        return User.objects.filter(id=self.request.user.id)
 
     def get_permissions(self):
         if self.action == "sign_up" or self.action == "login":
@@ -24,7 +24,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 
     @action(detail=False, methods=["GET"])
     def me(self, request):
-        me = self.get_queryset()
+        me = self.get_queryset().first()
         serializer = self.get_serializer(me)
 
         return Response(serializer.data)
