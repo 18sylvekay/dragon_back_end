@@ -36,3 +36,24 @@ class UserTestCase(TestCase):
         response = self.client.post("/api/users/sign_up/", data=data)
 
         self.assertEqual(response.status_code, 200)
+
+    def test_login_endpoint(self):
+        data = {
+            "email": self.email,
+            "password": "Password99!",
+        }
+
+        response = self.client.post("/api/users/login/", data=data)
+
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_logout_endpoint(self):
+        user = User.objects.get(email=self.email)
+        token = Token.objects.get(user=user)
+
+        self.client = APIClient()
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
+        response = self.client.post("/api/users/logout/")
+
+        self.assertEqual(response.status_code, 200)

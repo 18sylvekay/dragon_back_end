@@ -1,4 +1,6 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import (logout, login, authenticate)
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
 from rest_framework.authtoken.models import Token
 from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
@@ -15,7 +17,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
         return User.objects.get(id=self.request.user.id)
 
     def get_permissions(self):
-        if self.action == "sign_up":
+        if self.action == "sign_up" or self.action == "login":
             return []
         else:
             return [permissions.IsAuthenticated()]
@@ -27,6 +29,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 
         return Response(serializer.data)
 
+    @method_decorator(never_cache)
     @action(detail=False, methods=["POST"])
     def sign_up(self, request):
         serializer = CreateUserSerializer(data=request.data)
@@ -48,3 +51,34 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
             )
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @method_decorator(never_cache)
+    @action(detail=False, methods=["POST"])
+    def login(self, request):
+        data = request.data
+        errors = {}
+
+        user = authenticate(
+            username=data["email"],
+            password=data["password"],
+        )
+
+        if user is None:
+            errors["non_field_errors"] = "Your username or password were incorrect."
+
+        if errors:
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+
+        login(request, user)
+        token = Token.objects.get_or_create(user=user)[0]
+
+        return Response({
+            "drf_token": token.key,
+            "user_data": MeSerializer(user).data,
+        })
+
+    @method_decorator(never_cache)
+    @action(detail=False, methods=["POST"])
+    def logout(self, request):
+        logout(request)
+        return Response(status=status.HTTP_200_OK)
