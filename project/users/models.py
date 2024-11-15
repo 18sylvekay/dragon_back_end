@@ -7,13 +7,17 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
 
     # Overriden properties
-    username = None
+    username = models.CharField(max_length=30, unique=True, null=True, blank=True)
     email = models.EmailField(
         unique=True,
         error_messages={
             "unique": "A user with that email address already exists.",
         }
     )
+
+    # Normal Properties
+    food_owned = models.PositiveIntegerField()
+    treasure_owned = models.PositiveIntegerField()
 
     # Methods
     def __str__(self):
