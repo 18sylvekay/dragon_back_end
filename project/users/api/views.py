@@ -12,13 +12,20 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = MeSerializer
 
     def get_queryset(self):
-        return User.objects.filter(id=self.request.user.id)
+        return User.objects.get(id=self.request.user.id)
 
     def get_permissions(self):
         if self.action == "sign_up":
             return []
         else:
             return [permissions.IsAuthenticated()]
+
+    @action(detail=False, methods=["GET"])
+    def me(self, request):
+        me = self.get_queryset()
+        serializer = self.get_serializer(me)
+
+        return Response(serializer.data)
 
     @action(detail=False, methods=["POST"])
     def sign_up(self, request):
