@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
 from project.users.api.serializers import CreateUserSerializer, MeSerializer
 from project.users.models import User
@@ -13,6 +13,12 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         return User.objects.filter(id=self.request.user.id)
+
+    def get_permissions(self):
+        if self.action == "sign_up":
+            return []
+        else:
+            return [permissions.IsAuthenticated()]
 
     @action(detail=False, methods=["POST"])
     def sign_up(self, request):
