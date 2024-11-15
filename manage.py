@@ -8,11 +8,10 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    print('socket hostname', socket.gethostname())
-    if re.match(r"kayson99", socket.gethostname()):
-        settings_name = "production"
-    else:
+    if re.match(r"Kaysons-MacBook-Pro", socket.gethostname()):
         settings_name = "development"
+    else:
+        settings_name = "production"
 
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', "project.settings." + settings_name)
 
