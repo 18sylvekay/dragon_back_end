@@ -12,7 +12,7 @@ class DragonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Dragon
-        fields = ("name", "food_percent", "happiness_percent", "dragon_type", "user_id", "level", "days_until_next_level")
+        fields = ("id", "name", "food_percent", "happiness_percent", "dragon_type", "date_created", "user_id", "level", "days_until_next_level")
 
     def get_user_id(self, obj):
         return obj.user.id
