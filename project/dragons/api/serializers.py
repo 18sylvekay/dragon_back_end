@@ -3,17 +3,16 @@ from rest_framework import serializers
 import pytz
 
 from project.dragons.models import Dragon
-from project.users.models import User
 
 
-class DragonSerializer(serializers.Serializer):
+class DragonSerializer(serializers.ModelSerializer):
     user_id = serializers.SerializerMethodField()
     level = serializers.SerializerMethodField()
     days_until_next_level = serializers.SerializerMethodField()
 
     class Meta:
         model = Dragon
-        fields = "__all__"
+        fields = ("name", "food_percent", "happiness_percent", "dragon_type", "user_id", "level", "days_until_next_level")
 
     def get_user_id(self, obj):
         return obj.user.id
@@ -35,8 +34,8 @@ class DragonSerializer(serializers.Serializer):
         # Days until the next full week
         return 7 - days_since_last_full_week if days_since_last_full_week != 0 else 0
 
-    def validate(self, attrs):
-        user_id = self.context['request'].user.id
-        attrs.user = user_id
-
-        return super().validate(attrs)
+    def create(self, validated_data):
+        user = self.context['request'].user
+        print('user', user)
+        validated_data['user'] = user
+        return super().create(validated_data)
