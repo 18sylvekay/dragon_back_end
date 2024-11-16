@@ -22,7 +22,7 @@ class DragonSerializer(serializers.ModelSerializer):
         delta = current_date - obj.date_created
 
         # Calculate full weeks since date created
-        return delta.days / 7
+        return delta.days // 7
 
     def get_days_until_next_level(self, obj):
         current_date = datetime.datetime.now(pytz.UTC)
