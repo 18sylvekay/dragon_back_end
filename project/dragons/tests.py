@@ -20,7 +20,7 @@ class DragonTestCase(TestCase):
         self.client = APIClient()
         self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
 
-        Dragon.objects.create(name="first", user=user)
+        Dragon.objects.create(name="first", user=user, dragon_type=Dragon.BLUE)
 
     def test_endpoint(self):
         response = self.client.get("/api/dragons/")
