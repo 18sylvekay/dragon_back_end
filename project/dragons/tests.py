@@ -1,6 +1,9 @@
+import datetime
 from django.test import TestCase
+import pytz
 
 from project.dragons.models import Dragon
+from project.dragons.utils import calculate_level
 from project.users.models import User
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
@@ -21,6 +24,16 @@ class DragonTestCase(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
 
         Dragon.objects.create(name="first", user=user, dragon_type=Dragon.BLUE)
+
+    def test_level_calculation(self):
+        date = datetime.datetime.now(pytz.UTC)
+        date -= datetime.timedelta(days=365)
+        dragon = Dragon.objects.get(name="first")
+        dragon.date_created = date
+
+        level = calculate_level(dragon)
+
+        self.assertEqual(level, 52)
 
     def test_get_endpoint(self):
         response = self.client.get("/api/dragons/")
