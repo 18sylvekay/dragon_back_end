@@ -3,6 +3,7 @@ from rest_framework import serializers
 import pytz
 
 from project.dragons.models import Dragon
+from project.users.models import User
 
 
 class DragonSerializer(serializers.Serializer):
@@ -33,3 +34,9 @@ class DragonSerializer(serializers.Serializer):
 
         # Days until the next full week
         return 7 - days_since_last_full_week if days_since_last_full_week != 0 else 0
+
+    def validate(self, attrs):
+        user_id = self.context['request'].user.id
+        attrs.user = user_id
+
+        return super().validate(attrs)
