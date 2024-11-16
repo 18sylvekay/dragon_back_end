@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 
 
@@ -17,7 +18,7 @@ class Dragon(models.Model):
     happiness_percent = models.PositiveIntegerField(default=60)
     dragon_type = models.CharField(max_length=10, choices=TYPE_CHOICES)
 
-    date_created = models.DateTimeField(auto_now=True)
+    date_created = models.DateTimeField(default=datetime.datetime.now)
     user = models.ForeignKey(
         'users.User',
         related_name='dragons',
