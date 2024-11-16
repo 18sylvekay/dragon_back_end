@@ -1,5 +1,5 @@
-import datetime
 from django.db import models
+from django.utils.timezone import now  # Use Django's timezone-aware now function
 
 
 class Dragon(models.Model):
@@ -18,7 +18,7 @@ class Dragon(models.Model):
     happiness_percent = models.PositiveIntegerField(default=60)
     dragon_type = models.CharField(max_length=10, choices=TYPE_CHOICES)
 
-    date_created = models.DateTimeField(default=datetime.datetime.now)
+    date_created = models.DateTimeField(default=now)
     user = models.ForeignKey(
         'users.User',
         related_name='dragons',
